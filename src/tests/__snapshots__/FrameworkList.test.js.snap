@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rendering the list with props Should render snapshot 1`] = `
+<div>
+  <ul>
+    <li>
+      React
+    </li>
+    <li>
+      Angular
+    </li>
+    <li>
+      Vue
+    </li>
+  </ul>
+</div>
+`;

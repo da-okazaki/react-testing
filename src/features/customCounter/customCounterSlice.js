@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchCount } from './counterAPI';
 
@@ -6,14 +7,34 @@ const initialState = {
   status: 'idle',
 };
 
+const sleep = (msec) => {
+  const start = new Date();
+  while (new Date() - start < msec);
+};
+
+export const fetchDummy = createAsyncThunk('fetch/dummy', async (num) => {
+  await sleep(2000);
+  return num;
+});
+
+export const fetchJson = createAsyncThunk('fetch/api', async () => {
+  const res = await axios.get('https://jsonplaceholder.typicode.com/users/1');
+  const { username } = res.data;
+  return username;
+});
+
 export const incrementAsync = createAsyncThunk('counter/fetchCount', async (amount) => {
   const response = await fetchCount(amount);
   return response.data;
 });
 
-export const counterSlice = createSlice({
-  name: 'counter',
-  initialState,
+export const customCounterSlice = createSlice({
+  name: 'customCounter',
+  initialState: {
+    mode: 0,
+    value: 0,
+    username: '',
+  },
   reducers: {
     increment: (state) => {
       state.value += 1;
@@ -37,7 +58,7 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, decrement, incrementByAmount } = customCounterSlice.actions;
 
 export const selectCount = (state) => state.counter.value;
 
@@ -48,4 +69,4 @@ export const incrementIfOdd = (amount) => (dispatch, getState) => {
   }
 };
 
-export default counterSlice.reducer;
+export default customCounterSlice.reducer;
